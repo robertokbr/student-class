@@ -4,15 +4,20 @@ import { PrismaService } from '../../../../infrastructure/database/prisma/prisma
 
 @Injectable()
 export class ClassesRepository {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(data?: Partial<Classes>): Promise<Classes[]> {
     return this.prisma.classes.findMany({
       where: {
         ...data,
-      }
+      },
+      include: {
+        students: {
+          include: {
+            student: true,
+          },
+        },
+      },
     });
   }
 
@@ -22,7 +27,10 @@ export class ClassesRepository {
     });
   }
 
-  async update(id: string, data: Partial<Classes & { students: ClassStudents[] }>): Promise<Classes> {
+  async update(
+    id: string,
+    data: Partial<Classes & { students: ClassStudents[] }>,
+  ): Promise<Classes> {
     const { students, ...dto } = data;
 
     return this.prisma.classes.update({
@@ -33,12 +41,19 @@ export class ClassesRepository {
         ...dto,
         students: {
           createMany: {
-            data: students.map(s => ({
+            data: students.map((s) => ({
               ...s,
-            }))
-          }
+            })),
+          },
         },
-      }
+      },
+      include: {
+        students: {
+          include: {
+            student: true,
+          },
+        },
+      },
     });
   }
 
@@ -47,7 +62,7 @@ export class ClassesRepository {
       where: {
         students: {
           some: {
-            id: {
+            studentId: {
               in: ids,
             },
           },

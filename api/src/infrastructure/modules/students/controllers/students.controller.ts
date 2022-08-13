@@ -8,16 +8,18 @@ import { CreateStudentUsecase } from '../../../../usecases/create-student.usecas
 @ApiTags('students')
 @Controller('students')
 export class StudentsController {
+  private readonly createStudentUsecase: CreateStudentUsecase;
+
   constructor(
     @Inject('StudentsRepository')
     private readonly studentsRepository: StudentsRepositoryInterface,
-  ) {}
+  ) {
+    this.createStudentUsecase = new CreateStudentUsecase(studentsRepository);
+  }
 
   @Post('/')
   async create(@Body() data: CreateStudentDto) {
-    const createStudentUsecase = new CreateStudentUsecase(this.studentsRepository);
-
-    return createStudentUsecase.execute(data);
+    return this.createStudentUsecase.execute(data);
   }
 
   @Get('/')

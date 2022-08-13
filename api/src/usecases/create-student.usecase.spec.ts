@@ -1,7 +1,7 @@
-import { ConflictException } from "@nestjs/common";
-import { StudentModel } from "../domain/models/student.model";
-import { StudentsRepositoryInterface } from "../domain/interfaces/students-repository.interface";
-import { CreateStudentUsecase } from "./create-student.usecase";
+import { ConflictException } from '@nestjs/common';
+import { StudentModel } from '../domain/models/student.model';
+import { StudentsRepositoryInterface } from '../domain/interfaces/students-repository.interface';
+import { CreateStudentUsecase } from './create-student.usecase';
 
 describe('CreateStudentUsecase', () => {
   let usecase: CreateStudentUsecase;
@@ -13,12 +13,8 @@ describe('CreateStudentUsecase', () => {
   } as StudentModel;
 
   const mockStudentsRepository: StudentsRepositoryInterface = {
-    findAll: jest.fn(
-      (_data) => Promise.resolve([]),
-    ),
-    create: jest.fn(
-      (_data) => Promise.resolve(mockStudent)
-    ),
+    findAll: jest.fn((_data) => Promise.resolve([])),
+    create: jest.fn((_data) => Promise.resolve(mockStudent)),
   };
 
   beforeEach(async () => {
@@ -48,13 +44,15 @@ describe('CreateStudentUsecase', () => {
   });
 
   it('should not be able to create a student if it already exists', async () => {
-    mockStudentsRepository.findAll = jest.fn(
-      () => Promise.resolve([mockStudent])
+    mockStudentsRepository.findAll = jest.fn(() =>
+      Promise.resolve([mockStudent]),
     );
 
-    await expect(usecase.execute({
-      name: mockStudent.name,
-      email: mockStudent.email,
-    })).rejects.toThrow(ConflictException);
+    await expect(
+      usecase.execute({
+        name: mockStudent.name,
+        email: mockStudent.email,
+      }),
+    ).rejects.toThrow(ConflictException);
   });
 });

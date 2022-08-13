@@ -1,7 +1,13 @@
-import { IsArray, IsOptional, IsString } from "class-validator";
+import {
+  IsArray,
+  IsEmail,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { BaseModel } from "./base.model";
-import { ClassStudentModel } from "./class-student.model";
+import { BaseModel } from './base.model';
+import { ClassStudentModel } from './class-student.model';
 
 export class StudentModel extends BaseModel {
   @ApiProperty()
@@ -10,10 +16,11 @@ export class StudentModel extends BaseModel {
 
   @ApiProperty()
   @IsString()
+  @MinLength(3)
   name: string;
 
   @ApiProperty()
-  @IsString()
+  @IsEmail()
   email: string;
 
   @ApiProperty()

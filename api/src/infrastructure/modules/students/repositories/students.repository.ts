@@ -4,15 +4,13 @@ import { PrismaService } from '../../../../infrastructure/database/prisma/prisma
 
 @Injectable()
 export class StudentsRepository {
-  constructor(
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(data?: Partial<Students>): Promise<Students[]> {
     return this.prisma.students.findMany({
       where: {
         ...data,
-      }
+      },
     });
   }
 

@@ -12,7 +12,7 @@ describe('StudentsRepository', () => {
         {
           provide: PrismaService,
           useValue: {},
-        }
+        },
       ],
     }).compile();
 

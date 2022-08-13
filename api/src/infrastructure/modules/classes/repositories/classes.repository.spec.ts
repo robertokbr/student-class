@@ -12,7 +12,7 @@ describe('ClassesRepository', () => {
         {
           provide: PrismaService,
           useValue: {},
-        }
+        },
       ],
     }).compile();
 

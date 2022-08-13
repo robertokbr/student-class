@@ -1,7 +1,7 @@
-import { ConflictException } from "@nestjs/common";
-import { ClassesRepositoryInterface } from "../domain/interfaces/classes-repository.interface";
-import { ClassModel } from "../domain/models/class.model";
-import { CreateClassUsecase } from "./create-class.usecase";
+import { ConflictException } from '@nestjs/common';
+import { ClassesRepositoryInterface } from '../domain/interfaces/classes-repository.interface';
+import { ClassModel } from '../domain/models/class.model';
+import { CreateClassUsecase } from './create-class.usecase';
 
 describe('CreateClassUsecase', () => {
   let usecase: CreateClassUsecase;
@@ -15,9 +15,7 @@ describe('CreateClassUsecase', () => {
     create: jest.fn((_data) => Promise.resolve(mockClass)),
     findAll: jest.fn(() => Promise.resolve([])),
     findByStudentIds: jest.fn(() => Promise.resolve([])),
-    update: jest.fn(
-      (_id, _data) => Promise.resolve(mockClass)
-    ),
+    update: jest.fn((_id, _data) => Promise.resolve(mockClass)),
   } as ClassesRepositoryInterface;
 
   beforeEach(async () => {
@@ -41,12 +39,12 @@ describe('CreateClassUsecase', () => {
   });
 
   it('should not be able to create a class if it already exists', async () => {
-    mockClassesRepository.findAll = jest.fn(
-      () => Promise.resolve([mockClass])
-    );
+    mockClassesRepository.findAll = jest.fn(() => Promise.resolve([mockClass]));
 
-    await expect(usecase.execute({
-      name: mockClass.name,
-    })).rejects.toThrow(ConflictException);
+    await expect(
+      usecase.execute({
+        name: mockClass.name,
+      }),
+    ).rejects.toThrow(ConflictException);
   });
 });

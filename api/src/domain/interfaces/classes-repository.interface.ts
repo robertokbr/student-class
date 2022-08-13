@@ -1,5 +1,5 @@
-import { CreateClassDto } from "../dtos/create-class.dto";
-import { ClassModel } from "../models/class.model";
+import { CreateClassDto } from '../dtos/create-class.dto';
+import { ClassModel } from '../models/class.model';
 
 export interface ClassesRepositoryInterface {
   findAll(data: Partial<ClassModel>): Promise<ClassModel[]>;

@@ -1,4 +1,7 @@
-import { PickType } from "@nestjs/swagger";
-import { StudentModel } from "../models/student.model";
+import { PickType } from '@nestjs/swagger';
+import { StudentModel } from '../models/student.model';
 
-export class CreateStudentDto extends PickType(StudentModel, ["name", "email"]) {}
+export class CreateStudentDto extends PickType(StudentModel, [
+  'name',
+  'email',
+]) {}

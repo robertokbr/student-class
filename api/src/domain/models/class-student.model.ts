@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsObject, IsString } from "class-validator";
-import { ClassModel } from "./class.model";
-import { StudentModel } from "./student.model";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsObject, IsString } from 'class-validator';
+import { ClassModel } from './class.model';
+import { StudentModel } from './student.model';
 
 export class ClassStudentModel {
   @ApiProperty()

@@ -7,13 +7,13 @@ describe('ClassesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [
-        ClassesController
+      controllers: [ClassesController],
+      providers: [
+        {
+          provide: 'ClassesRepository',
+          useValue: {},
+        },
       ],
-      providers: [{
-        provide: 'ClassesRepository',
-        useValue: {},
-      }],
     }).compile();
 
     controller = module.get<ClassesController>(ClassesController);
