@@ -14,8 +14,8 @@ describe('AddStudentsToClassUsecase', () => {
   const mockClassesRepository = {
     create: jest.fn((_data) => Promise.resolve(mockClass)),
     findAll: jest.fn(() => Promise.resolve([])),
-    findByStudentIds: jest.fn(() => Promise.resolve([])),
-    update: jest.fn((_id, _data) => Promise.resolve(mockClass)),
+    findByStudentIds: jest.fn(() => Promise.resolve(undefined)),
+    update: jest.fn((_id, data) => Promise.resolve(data)),
   } as ClassesRepositoryInterface;
 
   beforeEach(async () => {
@@ -44,7 +44,7 @@ describe('AddStudentsToClassUsecase', () => {
 
   it('should not be able to add students to class if they are already added', async () => {
     mockClassesRepository.findByStudentIds = jest.fn(() =>
-      Promise.resolve([mockClass]),
+      Promise.resolve(mockClass),
     );
 
     await expect(

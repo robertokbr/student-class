@@ -8,12 +8,14 @@ export class CreateStudentUsecase {
   ) {}
 
   async execute(data: CreateStudentDto) {
-    const students = await this.studentsRepository.findAll({
+    const [conflictingStudentRecord] = await this.studentsRepository.findAll({
       email: data.email,
     });
 
-    if (students.length > 0)
-      throw new ConflictException('Student already exists');
+    if (conflictingStudentRecord)
+      throw new ConflictException(
+        `Student with email ${data.email} already exists`,
+      );
 
     return this.studentsRepository.create(data);
   }

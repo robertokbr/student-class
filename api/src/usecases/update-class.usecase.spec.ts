@@ -1,10 +1,10 @@
 import { ConflictException } from '@nestjs/common';
 import { ClassesRepositoryInterface } from '../domain/interfaces/classes-repository.interface';
 import { ClassModel } from '../domain/models/class.model';
-import { CreateClassUsecase } from './create-class.usecase';
+import { UpdateClassUsecase } from './update-class.usecase';
 
-describe('CreateClassUsecase', () => {
-  let usecase: CreateClassUsecase;
+describe('UpdateClassUsecase', () => {
+  let usecase: UpdateClassUsecase;
 
   const mockClass = {
     id: '1',
@@ -19,30 +19,30 @@ describe('CreateClassUsecase', () => {
   } as ClassesRepositoryInterface;
 
   beforeEach(async () => {
-    usecase = new CreateClassUsecase(mockClassesRepository);
+    usecase = new UpdateClassUsecase(mockClassesRepository);
   });
 
   it('should be defined', () => {
     expect(usecase).toBeDefined();
   });
 
-  it('should be able to create a class if it not exists', async () => {
-    const result = await usecase.execute({
+  it('should be able to update a class name if a class with same name not exists', async () => {
+    const result = await usecase.execute(mockClass.id, {
       name: mockClass.name,
     });
 
-    expect(mockClassesRepository.create).toHaveBeenCalledWith({
+    expect(mockClassesRepository.update).toHaveBeenCalledWith(mockClass.id, {
       name: mockClass.name,
     });
 
     expect(result).toBeTruthy();
   });
 
-  it('should not be able to create a class if it already exists', async () => {
+  it('should not be able to create a class if a class with same name already exists', async () => {
     mockClassesRepository.findAll = jest.fn(() => Promise.resolve([mockClass]));
 
     await expect(
-      usecase.execute({
+      usecase.execute(mockClass.id, {
         name: mockClass.name,
       }),
     ).rejects.toThrow(ConflictException);

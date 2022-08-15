@@ -2,7 +2,7 @@ import { ClassesRepositoryInterface } from '../domain/interfaces/classes-reposit
 import { AddStudentsToClassDto } from '../domain/dtos/add-students-to-class.dto';
 import { ClassStudentModel } from '../domain/models/class-student.model';
 import { ConflictException } from '@nestjs/common';
-import { ClassWithStudentsDto } from 'src/domain/dtos/class-with-students.dto';
+import { ClassWithStudentsDto } from '../domain/dtos/class-with-students.dto';
 
 export class AddStudentsToClassUsecase {
   constructor(private readonly classesRepository: ClassesRepositoryInterface) {}
@@ -11,26 +11,29 @@ export class AddStudentsToClassUsecase {
     classId: string,
     data: AddStudentsToClassDto,
   ): Promise<ClassWithStudentsDto> {
-    const classStudents = await this.classesRepository.findByStudentIds(
-      data.studentIds,
-    );
+    const conflictingClassRecord =
+      await this.classesRepository.findByStudentIds(classId, data.studentIds);
 
-    if (classStudents.length > 0) {
+    if (conflictingClassRecord) {
+      const students = conflictingClassRecord.students.filter((s) =>
+        data.studentIds.includes(s.studentId),
+      );
+
       throw new ConflictException(
-        `Students with ids [${classStudents
-          .map((s) => s.id)
-          .join(', ')}] are already added to class`,
+        `Students are already added to class: [ ${students
+          .map(({ student }) => student.name)
+          .join(', ')} ]`,
       );
     }
 
-    const students = data.studentIds.map((studentId) => ({
+    const serializedStudentIds = data.studentIds.map((studentId) => ({
       studentId,
     })) as ClassStudentModel[];
 
-    const classStudent = await this.classesRepository.update(classId, {
-      students,
+    const updatedClass = await this.classesRepository.update(classId, {
+      students: serializedStudentIds,
     });
 
-    return new ClassWithStudentsDto(classStudent);
+    return new ClassWithStudentsDto(updatedClass);
   }
 }
