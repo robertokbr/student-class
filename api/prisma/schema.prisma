@@ -17,11 +17,13 @@ model Students {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt()
   classes     ClassStudents[]
+
+  @@index([name], type: Hash)
 }
 
 model Classes {
   id          String   @id @default(cuid())
-  name        String   @unique()
+  name        String?  @unique()
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt()
   students    ClassStudents[]
@@ -33,6 +35,6 @@ model ClassStudents {
   studentId   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt()
-  student     Students @relation(fields: [studentId], references: [id])
-  class       Classes  @relation(fields: [classId], references: [id])
+  student     Students @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  class       Classes  @relation(fields: [classId], references: [id], onDelete: Cascade)
 }
