@@ -10,7 +10,7 @@ export class ClassModel extends BaseModel {
 
   @ApiProperty()
   @IsString()
-  @MinLength(3)
+  @IsOptional()
   name: string;
 
   @ApiProperty()

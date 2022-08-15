@@ -27,7 +27,7 @@ export class ClassWithStudentsDto {
   constructor({ students, ...data }: ClassModel) {
     Object.assign(this, {
       ...data,
-      students: students.map((s) => s.student),
+      students: students?.map((s) => s.student) || [],
     });
   }
 }
