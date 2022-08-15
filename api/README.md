@@ -1,5 +1,5 @@
 # Student Class API
-### Thi project was bootstrapped by the Nest.JS CLI and has been made with the following technologies:
+### This project was bootstrapped by the Nest.JS CLI and has been made with the following technologies:
 
 ### Technologies
 - Nest.JS: Web Framework
@@ -9,6 +9,21 @@
 - Class Validator: Validator
 - Swagger: Documentation builder
 - Jest: Test lib
+- Supertest: E2E Test lib
+
+### Architecture
+- Clean Architecture
+  - domain
+    - dtos
+    - models
+    - interfaces
+  -infrastructure
+    - filters & interceptors
+    - frameworks & libs configs
+    - database
+    - modules controllers and repositories
+  - usecases
+    - usecases & unit tests
 
 ### How to run
 - Copy `.env`
@@ -27,4 +42,24 @@
 ```bash
   yarn prisma migrate dev
 ```
--
+- Run server on dev mode
+```bash
+  yarn start:dev
+```
+
+Open http://localhost:3333/docs to see the documentation.
+
+Run `yarn prisma studio` to take a look at the database.
+
+### How to run tests
+```bash
+  # unit
+  yarn test
+
+  # e2e
+  yarn test:e2e
+
+  # integration
+  yarn test:int
+```
+
