@@ -39,13 +39,15 @@ export class ClassesRepository {
       },
       data: {
         ...dto,
-        students: {
-          createMany: {
-            data: students.map((s) => ({
-              ...s,
-            })),
+        ...(students && {
+          students: {
+            createMany: {
+              data: students.map((s) => ({
+                ...s,
+              })),
+            },
           },
-        },
+        }),
       },
       include: {
         students: {
@@ -57,14 +59,22 @@ export class ClassesRepository {
     });
   }
 
-  async findByStudentIds(ids: string[]): Promise<Classes[]> {
-    return this.prisma.classes.findMany({
+  async findByStudentIds(id: string, studentIds: string[]): Promise<Classes> {
+    return this.prisma.classes.findFirst({
       where: {
+        id,
         students: {
           some: {
             studentId: {
-              in: ids,
+              in: studentIds,
             },
+          },
+        },
+      },
+      include: {
+        students: {
+          include: {
+            student: true,
           },
         },
       },

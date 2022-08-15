@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
-import { pinoConfig } from 'src/infrastructure/configs/pino.config';
+import { pinoConfig } from '../../../infrastructure/configs/pino.config';
 import { StudentsController } from './controllers/students.controller';
 import { StudentsRepository } from './repositories/students.repository';
 
