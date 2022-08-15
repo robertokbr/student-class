@@ -17,11 +17,13 @@
     - dtos
     - models
     - interfaces
-  -infrastructure
+    - 
+  - infrastructure
     - filters & interceptors
     - frameworks & libs configs
     - database
     - modules controllers and repositories
+    - 
   - usecases
     - usecases & unit tests
 
