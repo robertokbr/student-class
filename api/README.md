@@ -23,7 +23,7 @@
     - frameworks & libs configs
     - database
     - modules controllers and repositories
-    
+    - integration tests
   - usecases
     - usecases & unit tests
 
